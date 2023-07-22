@@ -1,0 +1,30 @@
+{
+	"name": "Application",
+	"image": "mcr.microsoft.com/devcontainers/go:0-1.20-bullseye",
+	"features": {
+		"ghcr.io/devcontainers-contrib/features/actions-runner:1": {},
+		"ghcr.io/devcontainers/features/node:1": {}
+	},
+
+	"mounts": ["source=${localWorkspaceFolder}/.devcontainer/app,target=/.devcontainer,type=bind,consistency=cached"],
+	"workspaceMount": "source=${localWorkspaceFolder}/app,target=/workspace,type=bind,consistency=cached",
+	"workspaceFolder": "/workspace",
+
+	"forwardPorts": [8080],
+
+	"postCreateCommand": "sh /.devcontainer/install-tools.sh",
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"ms-azuretools.vscode-docker",
+				"golang.go"
+			]
+		}
+	}
+
+	// Configure tool-specific properties.
+	// "customizations": {},
+
+	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
+	// "remoteUser": "root"
+}

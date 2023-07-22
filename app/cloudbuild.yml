@@ -1,0 +1,27 @@
+substitutions:
+  _IMAGE_NAME: teamnotiz
+  _REGION: us-central1
+  _SERVICE_NAME: teamnotiz
+
+steps:
+# Build the container image
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build',
+        '-t', 'gcr.io/$PROJECT_ID/${_IMAGE_NAME}:$SHORT_SHA',
+        '-t', 'gcr.io/$PROJECT_ID/${_IMAGE_NAME}:latest',
+        '-f', './app/Dockerfile', './app']
+  env:
+    - 'DOCKER_BUILDKIT=1'
+
+# Push the container image to Container Registry
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['push', 'gcr.io/$PROJECT_ID/${_IMAGE_NAME}:$SHORT_SHA']
+
+# Deploy container image to Cloud Run
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  entrypoint: gcloud
+  args: ['run', 'deploy', '${_SERVICE_NAME}', '--image', 'gcr.io/$PROJECT_ID/${_IMAGE_NAME}:$SHORT_SHA', '--region', '${_REGION}']
+
+images:
+- gcr.io/$PROJECT_ID/${_IMAGE_NAME}:$SHORT_SHA
+- gcr.io/$PROJECT_ID/${_IMAGE_NAME}:latest

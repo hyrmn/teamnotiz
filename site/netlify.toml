@@ -1,0 +1,17 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+  functions = "netlify/functions"
+  NODE_ENV = "18.17.0"
+
+[dev]
+  publish = "./dist"
+  command = "npm run watch"
+
+[context.production]
+  environment = { NODE_VERSION = "18.17.0", NODE_ENV = "production" }
+
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/:splat"
+  status = 200
