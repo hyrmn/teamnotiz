@@ -13,6 +13,8 @@
 	"forwardPorts": [8080],
 
 	"postCreateCommand": "sh /.devcontainer/install-tools.sh",
+	"postStartCommand": "git config --global --add safe.directory ${containerWorkspaceFolder}",
+
 	"customizations": {
 		"vscode": {
 			"extensions": [
